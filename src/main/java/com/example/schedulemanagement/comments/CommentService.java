@@ -4,6 +4,7 @@ import com.example.schedulemanagement.schedules.ScheduleRepository;
 import com.example.schedulemanagement.schedules.ScheduleResponseDto;
 import com.example.schedulemanagement.schedules.Todo;
 import com.example.schedulemanagement.users.User;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -30,12 +31,7 @@ public class CommentService {
     public CommentResponseDto findCommentById(Long todoId, Long commentId) {
         Comment findComment = commentRepository.findByIdOrElseThrow(commentId);
 
-        if(!findComment.getTodo().getId().equals(todoId)){
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    "Comment not found" + commentId
-            );
-        }
+        checkCommentTodoId(findComment, todoId);
         return new CommentResponseDto(findComment);
     }
 
@@ -48,17 +44,30 @@ public class CommentService {
         return responseDtoList;
     }
 
+    @Transactional
     public CommentResponseDto updateComment(Long todoId, Long commentId, String contents) {
         Comment comment = commentRepository.findByIdOrElseThrow(commentId);
-        if(!comment.getTodo().getId().equals(todoId)){
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    "Comment not found" + commentId
-            );
-        }
+        checkCommentTodoId(comment, todoId);
 
         comment.updateContents(contents);
 
         return new CommentResponseDto(comment);
+    }
+
+    @Transactional
+    public void deleteComment(Long todoId, Long commentId) {
+        Comment comment = commentRepository.findByIdOrElseThrow(commentId);
+        checkCommentTodoId(comment, todoId);
+
+        commentRepository.delete(comment);
+    }
+
+    private void checkCommentTodoId(Comment comment, Long todoId){
+        if(!comment.getTodo().getId().equals(todoId)){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Comment not found" + comment.getId()
+            );
+        }
     }
 }

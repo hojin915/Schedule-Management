@@ -54,6 +54,7 @@ public class ScheduleService {
         return new ScheduleResponseDto(todo);
     }
 
+    @Transactional
     public void deleteSchedule(Long todoId) {
         Todo todo = scheduleRepository.findByIdOrElseThrow(todoId);
         scheduleRepository.delete(todo);

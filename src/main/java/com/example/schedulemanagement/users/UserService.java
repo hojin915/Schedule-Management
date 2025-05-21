@@ -50,6 +50,7 @@ public class UserService {
         return new UserResponseDto(user);
     }
 
+    @Transactional
     public void delete(Long userId) {
         User findUser = userRepository.findByIdOrElseThrow(userId);
         userRepository.delete(findUser);

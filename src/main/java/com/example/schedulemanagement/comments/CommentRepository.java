@@ -8,7 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    List<Comment> findAllByTodoId(Long todoId);
+    List<Comment> findAllByTodoId(Long id);
 
     default Comment findByIdOrElseThrow(Long id){
         return findById(id)
