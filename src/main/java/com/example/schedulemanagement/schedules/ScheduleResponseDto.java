@@ -1,6 +1,5 @@
 package com.example.schedulemanagement.schedules;
 
-import com.example.schedulemanagement.BaseEntity;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

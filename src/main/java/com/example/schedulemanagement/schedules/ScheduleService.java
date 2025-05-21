@@ -2,12 +2,10 @@ package com.example.schedulemanagement.schedules;
 
 import com.example.schedulemanagement.users.User;
 import com.example.schedulemanagement.users.UserRepository;
-import com.example.schedulemanagement.users.UserResponseDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,9 +1,7 @@
 package com.example.schedulemanagement.comments;
 
 import com.example.schedulemanagement.schedules.ScheduleRepository;
-import com.example.schedulemanagement.schedules.ScheduleResponseDto;
 import com.example.schedulemanagement.schedules.Todo;
-import com.example.schedulemanagement.users.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
