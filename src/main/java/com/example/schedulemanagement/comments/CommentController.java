@@ -46,12 +46,14 @@ public class CommentController {
     public ResponseEntity<CommentResponseDto> updateComment(
             @PathVariable Long todoId,
             @PathVariable Long commentId,
-            @Valid @RequestBody CommentRequestDto dto
+            @Valid @RequestBody CommentRequestDto dto,
+            @SessionAttribute(Const.LOGIN_USER) UserResponseDto user
     ){
         CommentResponseDto commentResponseDto = commentService.updateComment(
                 todoId,
                 commentId,
-                dto.getContents()
+                dto.getContents(),
+                user.getId()
         );
         return new ResponseEntity<>(commentResponseDto, HttpStatus.OK);
     }
@@ -59,9 +61,10 @@ public class CommentController {
     @DeleteMapping("/{commentId}")
     public ResponseEntity<Void> deleteComment(
             @PathVariable Long todoId,
-            @PathVariable Long commentId
+            @PathVariable Long commentId,
+            @SessionAttribute(Const.LOGIN_USER) UserResponseDto user
     ){
-        commentService.deleteComment(todoId, commentId);
+        commentService.deleteComment(todoId, commentId, user.getId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

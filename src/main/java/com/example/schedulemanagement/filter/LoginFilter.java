@@ -1,6 +1,7 @@
 package com.example.schedulemanagement.filter;
 
 import com.example.schedulemanagement.Const;
+import com.example.schedulemanagement.exception.ValidateFailException;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,6 +13,7 @@ import java.io.IOException;
 
 @Slf4j
 public class LoginFilter implements Filter {
+    // 회원가입, 로그인, 일정과 댓글 조회는 로그인 없이 가능
     private static final String[] WHITE_LIST = {
             "GET /schedules",
             "GET /schedules/*",
@@ -38,7 +40,10 @@ public class LoginFilter implements Filter {
             HttpSession session = httpRequest.getSession(false);
 
             if(session == null || session.getAttribute(Const.LOGIN_USER) == null){
-                throw new RuntimeException("login required");
+                throw new ValidateFailException(
+                        "doFilter, no session found or has problem on getting attribute from session",
+                        "Login required"
+                );
             }
 
             log.info("longin success");

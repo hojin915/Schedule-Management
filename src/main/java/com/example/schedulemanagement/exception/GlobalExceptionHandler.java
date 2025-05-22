@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
     @ExceptionHandler(ValidateFailException.class)
     public ResponseEntity<ErrorResponseDto> handleValidateFailException(ValidateFailException e){
+        // log 메세지와 응답 메세지 분리
+        // 발생위치, 로그메세지 [= 발생항목(id)] 형식으로 작성
+        // exception 을 throw 할 때 설정 가능
         log.info("ValidateFail: {}", e.getLogMessage());
         ErrorResponseDto errorResponse = new ErrorResponseDto(e.getMessage(), 401);
 

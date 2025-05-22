@@ -1,9 +1,12 @@
 package com.example.schedulemanagement.comments;
 
+import com.example.schedulemanagement.exception.NotFoundException;
+import com.example.schedulemanagement.exception.ValidateFailException;
 import com.example.schedulemanagement.schedules.ScheduleRepository;
 import com.example.schedulemanagement.schedules.Todo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.NotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -32,7 +35,6 @@ public class CommentService {
     public CommentResponseDto findCommentById(Long todoId, Long commentId) {
         Comment findComment = commentRepository.findByIdOrElseThrow(commentId);
 
-        checkCommentTodoId(findComment, todoId);
         return new CommentResponseDto(findComment);
     }
 
@@ -46,9 +48,10 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentResponseDto updateComment(Long todoId, Long commentId, String contents) {
+    // 업데이트, 삭제 할 때 댓글 작성자가 로그인한 유저와 동일한지 체크
+    public CommentResponseDto updateComment(Long todoId, Long commentId, String contents, Long userId) {
         Comment comment = commentRepository.findByIdOrElseThrow(commentId);
-        checkCommentTodoId(comment, todoId);
+        checkCommentUserId(comment, userId);
 
         comment.updateContents(contents);
 
@@ -56,18 +59,21 @@ public class CommentService {
     }
 
     @Transactional
-    public void deleteComment(Long todoId, Long commentId) {
+    public void deleteComment(Long todoId, Long commentId, Long userId) {
         Comment comment = commentRepository.findByIdOrElseThrow(commentId);
-        checkCommentTodoId(comment, todoId);
+        checkCommentUserId(comment, userId);
 
         commentRepository.delete(comment);
     }
 
-    private void checkCommentTodoId(Comment comment, Long todoId){
-        if(!comment.getTodo().getId().equals(todoId)){
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    "Comment not found" + comment.getId()
+    // 삭제하려는 댓글의 userId와 요청한 userId를 비교
+    private void checkCommentUserId(Comment comment, Long userId){
+        if(!comment.getUserId().equals(userId)){
+            throw new ValidateFailException(
+                    "checkCommentUserId, Requested userId does not match with comment userId" +
+                            " requested = " + userId +
+                            " comment todoId = " +comment.getUserId(),
+                    "Not authorized"
             );
         }
     }
