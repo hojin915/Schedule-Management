@@ -1,5 +1,8 @@
 package com.example.schedulemanagement.users;
 
+import com.example.schedulemanagement.Const;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+
+    @PostMapping("/login")
+    public ResponseEntity<UserResponseDto> login(
+            @RequestBody UserLoginRequestDto dto,
+            HttpServletRequest request
+    ) {
+       UserResponseDto responseDto = userService.login(dto.getEmail(), dto.getPassword());
+
+       HttpSession session = request.getSession();
+
+       session.setAttribute(Const.LOGIN_USER, responseDto);
+
+       return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
 
     @PostMapping("/signup")
     public ResponseEntity<UserResponseDto> save(@RequestBody UserSignUpRequestDto dto) {

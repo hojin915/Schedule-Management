@@ -13,6 +13,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+
+    // exception 추가해야함
+    public UserResponseDto login(String email, String password) {
+        User user = userRepository.findUserByEmail(email);
+        if(!user.getPassword().equals(password)){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong password");
+        }
+        return new UserResponseDto(user);
+    }
+
     public UserResponseDto save(String name, String email, String password) {
         User user = new User(name, email, password);
 
@@ -53,4 +63,5 @@ public class UserService {
         User findUser = userRepository.findByIdOrElseThrow(userId);
         userRepository.delete(findUser);
     }
+
 }

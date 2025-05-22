@@ -15,7 +15,8 @@ public class LoginFilter implements Filter {
             "GET /schedules",
             "GET /schedules/*",
             "POST /users/signup",
-            "GET /users/login"
+            "GET /users/login",
+            "POST /users/login"
     };
 
     @Override
