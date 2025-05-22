@@ -1,6 +1,7 @@
 package com.example.schedulemanagement.users;
 
 import com.example.schedulemanagement.Const;
+import com.example.schedulemanagement.config.PasswordEncoder;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;

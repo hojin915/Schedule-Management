@@ -1,11 +1,10 @@
 package com.example.schedulemanagement.users;
 
+import com.example.schedulemanagement.config.PasswordEncoder;
 import com.example.schedulemanagement.exception.ValidateFailException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +13,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public UserResponseDto login(String email, String password) {
         User user = userRepository.findUserByEmailOrElseThrow(email);
-        if(!user.getPassword().equals(password)){
+        if(!passwordEncoder.matches(password, user.getPassword())){
             throw new ValidateFailException(
                     "login, Password mismatch",
                     "User not exist or password does not match"
@@ -27,6 +27,7 @@ public class UserService {
     }
 
     public UserResponseDto save(String name, String email, String password) {
+        password = passwordEncoder.encode(password);
         User user = new User(name, email, password);
 
         User savedUser = userRepository.save(user);
@@ -52,7 +53,7 @@ public class UserService {
     public UserResponseDto updateUser(Long userId, String name, String email, String password) {
         User user = userRepository.findByIdOrElseThrow(userId);
 
-        if(!user.getUsername().equals(name) || !user.getPassword().equals(password)){
+        if(!user.getUsername().equals(name) || !passwordEncoder.matches(password, user.getPassword())){
             throw new ValidateFailException(
                     "updateUser, recheck username or password",
                     "User not exist or password does not match"
