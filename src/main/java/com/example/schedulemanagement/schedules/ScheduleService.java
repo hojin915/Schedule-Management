@@ -15,13 +15,15 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final UserRepository userRepository;
 
-    public ScheduleResponseDto save(String title, String contents) {
-        User user = userRepository.findByIdOrElseThrow(1L);
+    public ScheduleResponseDto save(Long userId, String title, String contents) {
+        User user = userRepository.findByIdOrElseThrow(userId);
 
         Todo todo = new Todo(title, contents);
         todo.setUser(user);
 
-        return new ScheduleResponseDto(todo);
+        Todo savedTodo = scheduleRepository.save(todo);
+
+        return new ScheduleResponseDto(savedTodo);
     }
 
     public ScheduleResponseDto findScheduleById(Long todoId) {
@@ -42,12 +44,8 @@ public class ScheduleService {
     public ScheduleResponseDto updateSchedule(Long todoId, String title, String contents) {
         Todo todo = scheduleRepository.findByIdOrElseThrow(todoId);
 
-        if(title != null){
-            todo.updateTitle(title);
-        }
-        if(contents != null){
-            todo.updateContents(contents);
-        }
+        todo.updateTitle(title);
+        todo.updateContents(contents);
 
         return new ScheduleResponseDto(todo);
     }

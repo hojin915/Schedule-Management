@@ -3,6 +3,7 @@ package com.example.schedulemanagement.users;
 import com.example.schedulemanagement.Const;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<UserResponseDto> login(
-            @RequestBody UserLoginRequestDto dto,
+            @Valid @RequestBody UserLoginRequestDto dto,
             HttpServletRequest request
     ) {
        UserResponseDto responseDto = userService.login(dto.getEmail(), dto.getPassword());
@@ -30,8 +31,18 @@ public class UserController {
        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if(session != null){
+            session.invalidate();
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PostMapping("/signup")
-    public ResponseEntity<UserResponseDto> save(@RequestBody UserSignUpRequestDto dto) {
+    public ResponseEntity<UserResponseDto> save(@Valid @RequestBody UserRequestDto dto) {
         UserResponseDto userResponseDto = userService.save(
                 dto.getName(),
                 dto.getEmail(),
@@ -56,7 +67,7 @@ public class UserController {
     @PatchMapping("/{userId}")
     public ResponseEntity<UserResponseDto> updateUser(
             @PathVariable Long userId,
-            @RequestBody UserUpdateRequestDto dto
+            @Valid @RequestBody UserRequestDto dto
     ){
         UserResponseDto userResponseDto = userService.updateUser(
                 userId,

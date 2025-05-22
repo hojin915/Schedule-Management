@@ -1,5 +1,6 @@
 package com.example.schedulemanagement.filter;
 
+import com.example.schedulemanagement.Const;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -36,7 +37,7 @@ public class LoginFilter implements Filter {
         if(!isWhiteList(method, requestURI)){
             HttpSession session = httpRequest.getSession(false);
 
-            if(session == null || session.getAttribute("sessionKey") == null){
+            if(session == null || session.getAttribute(Const.LOGIN_USER) == null){
                 throw new RuntimeException("login required");
             }
 

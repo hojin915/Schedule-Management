@@ -1,5 +1,6 @@
 package com.example.schedulemanagement.users;
 
+import com.example.schedulemanagement.exception.ValidateFailException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,11 +15,13 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
 
-    // exception 추가해야함
     public UserResponseDto login(String email, String password) {
-        User user = userRepository.findUserByEmail(email);
+        User user = userRepository.findUserByEmailOrElseThrow(email);
         if(!user.getPassword().equals(password)){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong password");
+            throw new ValidateFailException(
+                    "login, Password mismatch",
+                    "User not exist or password does not match"
+            );
         }
         return new UserResponseDto(user);
     }
@@ -50,7 +53,10 @@ public class UserService {
         User user = userRepository.findByIdOrElseThrow(userId);
 
         if(!user.getUsername().equals(name) || !user.getPassword().equals(password)){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "wrong name or password");
+            throw new ValidateFailException(
+                    "updateUser, recheck username or password",
+                    "User not exist or password does not match"
+            );
         }
 
         user.updateEmail(email);

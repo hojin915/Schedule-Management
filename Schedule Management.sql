@@ -22,7 +22,7 @@ CREATE TABLE `comments` (
 	`id`	BIGINT	NOT NULL,
 	`todo_id`	BIGINT	NOT NULL,
 	`user_id`	BIGINT	NOT NULL,
-	`contents`	VARCHAR(200)	NOT NULL,
+	`contents`	VARCHAR(100)	NOT NULL,
 	`created_at`	DATETIME	NOT NULL,
 	`updated_at`	DATETIME	NOT NULL
 );

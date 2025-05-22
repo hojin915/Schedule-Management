@@ -1,5 +1,8 @@
 package com.example.schedulemanagement.comments;
 
+import com.example.schedulemanagement.Const;
+import com.example.schedulemanagement.users.UserResponseDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +19,10 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<CommentResponseDto> save(
             @PathVariable Long todoId,
-            @RequestBody CommentRequestDto dto
+            @Valid @RequestBody CommentRequestDto dto,
+            @SessionAttribute(Const.LOGIN_USER) UserResponseDto user
     ){
-        CommentResponseDto commentResponseDto = commentService.save(todoId, dto.getContents());
+        CommentResponseDto commentResponseDto = commentService.save(todoId, user.getId(), dto.getContents());
 
         return new ResponseEntity<>(commentResponseDto, HttpStatus.CREATED);
     }
@@ -42,7 +46,7 @@ public class CommentController {
     public ResponseEntity<CommentResponseDto> updateComment(
             @PathVariable Long todoId,
             @PathVariable Long commentId,
-            @RequestBody CommentRequestDto dto
+            @Valid @RequestBody CommentRequestDto dto
     ){
         CommentResponseDto commentResponseDto = commentService.updateComment(
                 todoId,

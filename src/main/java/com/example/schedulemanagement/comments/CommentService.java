@@ -17,13 +17,16 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final ScheduleRepository scheduleRepository;
 
-    public CommentResponseDto save(Long todoId, String contents) {
+    public CommentResponseDto save(Long todoId, Long userId, String contents) {
         Todo todo = scheduleRepository.findByIdOrElseThrow(todoId);
 
         Comment comment = new Comment(contents);
         comment.setTodo(todo);
+        comment.setUserId(userId);
 
-        return new CommentResponseDto(comment);
+        Comment savedComment = commentRepository.save(comment);
+
+        return new CommentResponseDto(savedComment);
     }
 
     public CommentResponseDto findCommentById(Long todoId, Long commentId) {

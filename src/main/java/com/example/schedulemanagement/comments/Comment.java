@@ -30,7 +30,10 @@ public class Comment extends BaseEntity {
 
     public void setTodo(Todo todo){
         this.todo = todo;
-        this.userId = todo.getUser().getId();
+    }
+
+    public void setUserId(Long userId){
+        this.userId = userId;
     }
 
     public void updateContents(String contents) {
