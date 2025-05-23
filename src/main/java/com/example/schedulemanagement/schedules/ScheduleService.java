@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,18 +41,19 @@ public class ScheduleService {
 
         // 전체 스케줄 리스트, 정렬 적용된 상태
         Page<Todo> todoPage = scheduleRepository.findAll(pageable);
+        List<Long> todoIdList = todoPage.getContent().stream().map(Todo::getId).toList();
         // 각 스케줄 commentCount
-        List<Object[]> result = commentRepository.countCommentGroupByTodoId();
+        List<Object[]> result = commentRepository.countCommentGroupByTodoId(todoIdList);
         Map<Long, Long> commentCountMap = new HashMap<>();
         for(Object[] row : result) {
             Long todoId = (Long) row[0];
             Long count = (Long) row[1];
             commentCountMap.put(todoId, count);
         }
-
+        System.out.println(result.size());
         // map 을 이용해 일정별로 댓글 수를 포함한 SchedulePageResponseDto 를 생성해서
         // 결과들을 Page 로 묶어 다시 리턴
-        return todoPage.map(todo -> {;
+        return todoPage.map(todo -> {
             Long commentCount = commentCountMap.getOrDefault(todo.getId(), 0L);
             return new SchedulePageResponseDto(todo, commentCount);
         });
