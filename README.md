@@ -1,10 +1,13 @@
 # Schedule-Management
 
 API 명세서  
-:https://www.notion.so/1f98976d5bc98097bf43f09b74332d74?v=1f98976d5bc9818d98a4000c8524edc6&pvs=4
+: https://www.notion.so/1f98976d5bc98097bf43f09b74332d74?v=1f98976d5bc9818d98a4000c8524edc6&pvs=4  
 
-src 디렉터리 구조
+![Schedule Management ERD.png](image/Schedule%20Management%20ERD.png)  
+
 <pre>
+src 디렉터리 구조
+
 src
  ┣ main
  ┃ ┣ java

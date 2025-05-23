@@ -1,9 +1,11 @@
 package com.example.schedulemanagement.schedules;
 
 import com.example.schedulemanagement.Const;
+import com.example.schedulemanagement.PageDto;
 import com.example.schedulemanagement.users.UserResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,9 +40,12 @@ public class ScheduleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ScheduleResponseDto>> findAllSchedules() {
-        List<ScheduleResponseDto> responseDtoList = scheduleService.findAllSchedules();
-        return new ResponseEntity<>(responseDtoList, HttpStatus.OK);
+    public ResponseEntity<PageDto<SchedulePageResponseDto>> findAllSchedules(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<SchedulePageResponseDto> responseDtoPage = scheduleService.findAllSchedules(page, size);
+        return new ResponseEntity<>(new PageDto<>(responseDtoPage), HttpStatus.OK);
     }
 
     @PatchMapping("/{todoId}")

@@ -1,19 +1,24 @@
 package com.example.schedulemanagement.schedules;
 
+import com.example.schedulemanagement.comments.CommentRepository;
 import com.example.schedulemanagement.users.User;
 import com.example.schedulemanagement.users.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
     public ScheduleResponseDto save(Long userId, String title, String contents) {
         User user = userRepository.findByIdOrElseThrow(userId);
@@ -31,13 +36,27 @@ public class ScheduleService {
         return new ScheduleResponseDto(todo);
     }
 
-    public List<ScheduleResponseDto> findAllSchedules() {
-        List<ScheduleResponseDto> responseDtoList = new ArrayList<>();
-        List<Todo> todoList = scheduleRepository.findAll();
-        for(Todo todo : todoList) {
-            responseDtoList.add(new ScheduleResponseDto(todo));
+    public Page<SchedulePageResponseDto> findAllSchedules(int page, int size) {
+        // page 설정
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("updatedAt").descending());
+
+        // 전체 스케줄 리스트, 정렬 적용된 상태
+        Page<Todo> todoPage = scheduleRepository.findAll(pageable);
+        // 각 스케줄 commentCount
+        List<Object[]> result = commentRepository.countCommentGroupByTodoId();
+        Map<Long, Long> commentCountMap = new HashMap<>();
+        for(Object[] row : result) {
+            Long todoId = (Long) row[0];
+            Long count = (Long) row[1];
+            commentCountMap.put(todoId, count);
         }
-        return responseDtoList;
+
+        // map 을 이용해 일정별로 댓글 수를 포함한 SchedulePageResponseDto 를 생성해서
+        // 결과들을 Page 로 묶어 다시 리턴
+        return todoPage.map(todo -> {;
+            Long commentCount = commentCountMap.getOrDefault(todo.getId(), 0L);
+            return new SchedulePageResponseDto(todo, commentCount);
+        });
     }
 
     @Transactional
