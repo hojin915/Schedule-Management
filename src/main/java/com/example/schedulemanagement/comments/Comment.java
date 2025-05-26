@@ -1,6 +1,6 @@
 package com.example.schedulemanagement.comments;
 
-import com.example.schedulemanagement.BaseEntity;
+import com.example.schedulemanagement.utils.BaseEntity;
 import com.example.schedulemanagement.schedules.Todo;
 import jakarta.persistence.*;
 import lombok.Getter;

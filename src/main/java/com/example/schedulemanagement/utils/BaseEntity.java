@@ -1,4 +1,4 @@
-package com.example.schedulemanagement;
+package com.example.schedulemanagement.utils;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

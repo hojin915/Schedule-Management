@@ -1,4 +1,4 @@
-package com.example.schedulemanagement;
+package com.example.schedulemanagement.utils;
 
 import lombok.Getter;
 import org.springframework.data.domain.Page;

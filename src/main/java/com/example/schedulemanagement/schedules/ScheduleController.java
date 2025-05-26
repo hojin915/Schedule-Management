@@ -1,7 +1,7 @@
 package com.example.schedulemanagement.schedules;
 
-import com.example.schedulemanagement.Const;
-import com.example.schedulemanagement.PageDto;
+import com.example.schedulemanagement.utils.Const;
+import com.example.schedulemanagement.utils.PageDto;
 import com.example.schedulemanagement.users.UserResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -9,8 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/schedules")

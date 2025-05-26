@@ -1,6 +1,6 @@
 package com.example.schedulemanagement.schedules;
 
-import com.example.schedulemanagement.BaseEntity;
+import com.example.schedulemanagement.utils.BaseEntity;
 import com.example.schedulemanagement.users.User;
 import jakarta.persistence.*;
 import lombok.Getter;

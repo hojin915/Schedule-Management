@@ -1,6 +1,6 @@
 package com.example.schedulemanagement.filter;
 
-import com.example.schedulemanagement.Const;
+import com.example.schedulemanagement.utils.Const;
 import com.example.schedulemanagement.exception.ValidateFailException;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;

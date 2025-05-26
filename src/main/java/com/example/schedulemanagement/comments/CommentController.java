@@ -1,6 +1,6 @@
 package com.example.schedulemanagement.comments;
 
-import com.example.schedulemanagement.Const;
+import com.example.schedulemanagement.utils.Const;
 import com.example.schedulemanagement.users.UserResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
