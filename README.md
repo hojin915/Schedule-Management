@@ -16,7 +16,7 @@ API 명세서에서 (인증제외) 라고 표시된 항목 외에는 기본적�
 https://www.notion.so/1f98976d5bc98097bf43f09b74332d74?v=1f98976d5bc9818d98a4000c8524edc6&pvs=4  
 
 ## DB ERD
-![Schedule Management ERD.png](image/Schedule%20Management%20ERD.png)  
+![Schedule Management ERD.png](image/Schedule%20Management%20ERD.png)
 
 <pre>
 src 디렉터리 구조
