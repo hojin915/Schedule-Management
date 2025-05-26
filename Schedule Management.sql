@@ -4,7 +4,7 @@ CREATE TABLE `users` (
 	`id`	BIGINT	NOT NULL,
 	`username`	VARCHAR(30) UNIQUE 	NOT NULL,
 	`email`	VARCHAR(50) UNICODE	NOT NULL,
-	`password`	VARCHAR(30)	NOT NULL,
+	`password`	VARCHAR(60)	NOT NULL,
 	`created_at`	DATETIME	NOT NULL,
 	`updated_at`	DATETIME	NOT NULL
 );
