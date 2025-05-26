@@ -4,14 +4,14 @@ CREATE TABLE `users` (
 	`id`	BIGINT	NOT NULL,
 	`username`	VARCHAR(30) UNIQUE 	NOT NULL,
 	`email`	VARCHAR(50) UNICODE	NOT NULL,
-	`password`	VARCHAR(60)	NOT NULL,
+	`password`	VARCHAR(30)	NOT NULL,
 	`created_at`	DATETIME	NOT NULL,
 	`updated_at`	DATETIME	NOT NULL
 );
 
 CREATE TABLE `schedules` (
 	`id`	BIGINT	NOT NULL,
-	`title`	VARCHAR(50)	NOT NULL,
+	`title`	VARCHAR(30)	NOT NULL,
 	`contents`	VARCHAR(200)	NOT NULL,
 	`user_id`	BIGINT	NOT NULL,
 	`created_at`	DATETIME	NOT NULL,
