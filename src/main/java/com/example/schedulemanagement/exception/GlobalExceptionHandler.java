@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(ValidateFailException.class)
+    // UNAUTHORIZED 예외를 묶어서 처리(로그인, 일정이나 댓글 수정 비밀번호 확인)
     public ResponseEntity<ErrorResponseDto> handleValidateFailException(ValidateFailException e){
         // log 메세지와 응답 메세지 분리
         // 발생위치, 로그메세지 [= 발생항목(id)] 형식으로 작성

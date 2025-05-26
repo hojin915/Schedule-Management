@@ -17,6 +17,7 @@ public class UserService {
 
     public UserResponseDto login(String email, String password) {
         User user = userRepository.findUserByEmailOrElseThrow(email);
+        // 입력한 비밀번호와 암호화된 DB 비밀번호 비교
         if(!passwordEncoder.matches(password, user.getPassword())){
             throw new ValidateFailException(
                     "login, Password mismatch",
@@ -27,6 +28,7 @@ public class UserService {
     }
 
     public UserResponseDto save(String name, String email, String password) {
+        // DB에 비밀번호 저장할 때 암호화
         password = passwordEncoder.encode(password);
         User user = new User(name, email, password);
 
@@ -53,6 +55,7 @@ public class UserService {
     public UserResponseDto updateUser(Long userId, String name, String email, String password) {
         User user = userRepository.findByIdOrElseThrow(userId);
 
+        // 이름, 비밀번호 재확인
         if(!user.getUsername().equals(name) || !passwordEncoder.matches(password, user.getPassword())){
             throw new ValidateFailException(
                     "updateUser, recheck username or password",

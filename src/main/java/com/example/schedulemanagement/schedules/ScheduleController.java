@@ -49,19 +49,24 @@ public class ScheduleController {
     @PatchMapping("/{todoId}")
     public ResponseEntity<ScheduleResponseDto> updateSchedule(
             @PathVariable Long todoId,
-            @Valid @RequestBody ScheduleRequestDto dto
+            @Valid @RequestBody ScheduleRequestDto dto,
+            @SessionAttribute(Const.LOGIN_USER) UserResponseDto user
     ){
         ScheduleResponseDto scheduleResponseDto = scheduleService.updateSchedule(
                 todoId,
                 dto.getTitle(),
-                dto.getContents()
+                dto.getContents(),
+                user.getId()
         );
         return new ResponseEntity<>(scheduleResponseDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{todoId}")
-    public ResponseEntity<Void> deleteSchedule(@PathVariable Long todoId){
-        scheduleService.deleteSchedule(todoId);
+    public ResponseEntity<Void> deleteSchedule(
+            @PathVariable Long todoId,
+            @SessionAttribute(Const.LOGIN_USER) UserResponseDto user
+    ){
+        scheduleService.deleteSchedule(todoId, user.getId());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

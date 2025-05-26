@@ -26,6 +26,7 @@ public class UserController {
 
        HttpSession session = request.getSession();
 
+       // session 에 속성 저장
        session.setAttribute(Const.LOGIN_USER, responseDto);
 
        return new ResponseEntity<>(responseDto, HttpStatus.OK);

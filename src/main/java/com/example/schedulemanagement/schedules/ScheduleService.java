@@ -1,6 +1,8 @@
 package com.example.schedulemanagement.schedules;
 
+import com.example.schedulemanagement.comments.Comment;
 import com.example.schedulemanagement.comments.CommentRepository;
+import com.example.schedulemanagement.exception.ValidateFailException;
 import com.example.schedulemanagement.users.User;
 import com.example.schedulemanagement.users.UserRepository;
 import jakarta.transaction.Transactional;
@@ -60,8 +62,10 @@ public class ScheduleService {
     }
 
     @Transactional
-    public ScheduleResponseDto updateSchedule(Long todoId, String title, String contents) {
+    public ScheduleResponseDto updateSchedule(Long todoId, String title, String contents, Long userId) {
         Todo todo = scheduleRepository.findByIdOrElseThrow(todoId);
+
+        checkScheduleUserId(todo, userId);
 
         todo.updateTitle(title);
         todo.updateContents(contents);
@@ -70,8 +74,23 @@ public class ScheduleService {
     }
 
     @Transactional
-    public void deleteSchedule(Long todoId) {
+    public void deleteSchedule(Long todoId, Long userId) {
         Todo todo = scheduleRepository.findByIdOrElseThrow(todoId);
+
+        checkScheduleUserId(todo, userId);
+
         scheduleRepository.delete(todo);
+    }
+
+    // 업데이트, 삭제하려는 일정의 userId와 요청한 userId를 비교
+    private void checkScheduleUserId(Todo todo, Long userId){
+        if(!todo.getUser().getId().equals(userId)){
+            throw new ValidateFailException(
+                    "checkScheduleUserId, Requested userId does not match with comment userId" +
+                            "\nrequested userId = " + userId +
+                            "\nschedule userId = " + todo.getUser().getId(),
+                    "Not authorized"
+            );
+        }
     }
 }

@@ -12,14 +12,6 @@ public class UserResponseDto {
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
 
-    public UserResponseDto(final Long id, final String name, final String email, final LocalDateTime createdAt, final LocalDateTime updatedAt) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
     public UserResponseDto(User user){
         this.id = user.getId();
         this.name = user.getUsername();

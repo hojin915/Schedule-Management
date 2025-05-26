@@ -56,6 +56,3 @@ public class LoginFilter implements Filter {
         return PatternMatchUtils.simpleMatch(WHITE_LIST, request);
     }
 }
-
-// exceptionHandler 등록해서 처리 지금 ValidateFailException 작동하는지 확인하고 안되면
-// (custom) AuthenticationEntryPoint, AccessDeniedHandler

@@ -10,6 +10,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
+// 유저, 일정, 댓글에서 상속중
+// Entity 생성시간, 업데이트 시간 필요할 때 상속
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)

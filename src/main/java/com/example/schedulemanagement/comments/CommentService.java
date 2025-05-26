@@ -66,13 +66,13 @@ public class CommentService {
         commentRepository.delete(comment);
     }
 
-    // 삭제하려는 댓글의 userId와 요청한 userId를 비교
+    // 업데이트, 삭제하려는 댓글의 userId와 요청한 userId를 비교
     private void checkCommentUserId(Comment comment, Long userId){
         if(!comment.getUserId().equals(userId)){
             throw new ValidateFailException(
                     "checkCommentUserId, Requested userId does not match with comment userId" +
-                            " requested = " + userId +
-                            " comment todoId = " +comment.getUserId(),
+                            "\nrequested userId = " + userId +
+                            "\ncomment userId = " + comment.getUserId(),
                     "Not authorized"
             );
         }
